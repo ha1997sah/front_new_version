@@ -3,84 +3,115 @@
 <div>
   <b-card no-body>
     <h1>test</h1>
-      <b-row>
-  <b-col lg="1">
-      <b-button
-      v-ripple.400="'rgba(255, 255, 255, 0.15)'"
-      variant="warning"
-      class="btn-icon rounded-circle"
-      @click="$router.push( { path: `/apps/competitions/matches/${idCat}`})"
-    >
-      <feather-icon icon="DownloadIcon" />
-    </b-button>
-          </b-col>
-            <b-col lg="11">
-          </b-col>
- 
-    </b-row>
-    <b-row>
-      <br>
-      </b-row>
-          <b-row>
-  <div class="tournament-bracket tournament-bracket--rounded">                                                     
-    <div class="tournament-bracket__round tournament-bracket__round--gold"
-     v-for="(round, roundIndex) of rounds"
-      :key="roundIndex"
-    >
-      <h3 class="tournament-bracket__round-title">{{round.name}}</h3>
-      <ul class="tournament-bracket__list">
-        <li class="tournament-bracket__item" v-for="(m, mIndex) of round.Matches"
-      :key="mIndex">
-          <div class="tournament-bracket__match" tabindex="0">
-            <table class="tournament-bracket__table">
-              <caption class="tournament-bracket__caption">
-                <time datetime="1998-02-18">18 February 1998</time>
-              </caption>
-              <thead class="sr-only">
-                <tr>
-                  <th>Country</th>
-                  <th>Score</th>
-                </tr>
-              </thead>  
-              <tbody class="tournament-bracket__content">
-                <tr class="tournament-bracket__team tournament-bracket__team--winner">
-                  <td class="tournament-bracket__country">
-                    <abbr class="tournament-bracket__code" title="Canada">{{m.player1}}</abbr>
-                    <span class="tournament-bracket__flag flag-icon flag-icon-ca" aria-label="Flag"></span>
-                  </td>
-                  <td class="tournament-bracket__score">
-                    <span class="tournament-bracket__number">  
-                       <input  style="width: 20px"  v-model="m.palyer1_score" @change="appel(m.matchIndex,round.nb_matches,round.id,round.roundIndex,m.palyer1_score,m.player2_score)"></input>
-                       </span>
-                  </td>
-                </tr>
-                <tr class="tournament-bracket__team">
-                  <td class="tournament-bracket__country">
-                    <abbr class="tournament-bracket__code" title="Kazakhstan">{{m.player2}}</abbr>
-                    <span class="tournament-bracket__flag flag-icon flag-icon-kz" aria-label="Flag"></span>
-                  </td>
-                  <td class="tournament-bracket__score">
-                    <span class="tournament-bracket__number">  
-                      <input  style="width: 20px" v-model="m.player2_score" @change="appel(m.matchIndex,round.nb_matches,round.id,round.roundIndex,m.palyer1_score,m.player2_score)"></input>
-                   </span>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </li>
+   
+    
+<b-row>
+  <b-col lg="6">  
+    <draggable
+      class="list-group list-group-flush cursor-move"
+      tag="ul"
 
-       
-      </ul>
+    >
+      <transition-group
+        type="transition"
+        name="flip-list"
+      >
+        <b-list-group-item
+          v-for="user in catUsers"
+        :key="user.id"
+          tag="li"
+         
+        >  
+
+          <div class="d-flex">
+            <div class="ml-25">
+              <b-card-text class="font-weight-bold mb-0">
+                  {{user.name}}
+
+              </b-card-text>
+            </div>
+          </div>
+        </b-list-group-item>
+      </transition-group>
+    </draggable>
+
+    <!-- code  -->
+
+  </b-col>
+      <b-col lg="2"> 
+       </b-col>
+    <b-col lg="4"> 
+      <b-row>
+      <div>
+        <h4 class="text-uppercase mb-0">
+          Tirage au sort
+         </h4>
+        <small>Choissiez les options</small>
+      </div>
+     
+    </b-row>
+    <!-- Algorithm options-->
+     <b-row>
+       <div>
+    <b-form-checkbox
+      v-model="algo"
+      value="1"
+      class="custom-control-danger"
+      checked
+    >
+      Single Elimination
+    </b-form-checkbox>
+    <b-form-checkbox
+      v-model="algo"
+      value="2"
+      class="custom-control-warning"
+    >
+      Double Elimination
+    </b-form-checkbox>
     </div>
- 
- 
-  </div>
         </b-row>
 
-    
-   
+        <!-- active seed-->
+     <b-row>
+       <div>
+      <b-card-text class="mb-0">
+        Seedez les jouoeurs
+      </b-card-text>
 
+      <b-form-checkbox
+        @change="open"
+        v-model="checked"
+        class="custom-control-primary"
+        name="check-button"
+        switch
+      />
+  
+    </div>
+    </b-row>
+ <b-row>
+       <div>
+       <b-button 
+      v-ripple.400="'rgba(113, 102, 240, 0.15)'"
+      v-b-toggle.sidebar-right
+      variant="outline-primary"
+      @click="tirage(catUsers)"
+    >
+    TIRAGE
+    </b-button>
+     <b-button
+      v-ripple.400="'rgba(113, 102, 240, 0.15)'"
+      v-b-toggle.sidebar-right
+      variant="outline-primary"
+      @click="seeBracket(catUsers)"
+    >
+    Voir le tirage
+    </b-button>
+    </div>
+    </b-row>
+    </b-col>
+
+  </b-row>
+ 
   </b-card>
 </div>
   
@@ -160,16 +191,7 @@ created(){
    console.log(this.category)
    
   })
- this.socket.emit('matches',{catId:router.currentRoute.params.id} )
-  this.socket.on("matchesRep", data =>{
 
-data.rounds.forEach(element => {
-  this.rounds.push(element),
-  console.log(this.rounds)
-
-
-});        
-          }) 
   
 },
 methods : {

@@ -225,10 +225,16 @@ export default [
     component: () => import('@/views/apps/competition/Bracket.vue'),
   },
   {
-    path: '/apps/competitions/division/:id',
-    name: 'apps-competitions-division',
-    component: () => import('@/views/apps/competition/Divison.vue'),
+    path: '/apps/competitions/players/:id',
+    name: 'apps-competitions-players',
+    component: () => import('@/views/apps/competition/ListPlayer.vue'),
   },
+  {
+    path: '/apps/competitions/matches/:id',
+    name: 'apps-competitions-matches',
+    component: () => import('@/views/apps/competition/ListMatches.vue'),
+  },
+
   {
     path: '/apps/competitions/edit/:id',
     name: 'apps-competitions-edit',

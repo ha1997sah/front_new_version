@@ -10,49 +10,40 @@ export default [
     },
   },
   {
-   
-    path: '/login1',
-    name: 'auth-login1',
+    path: '/login',
+    name: 'auth-login',
     component: () => import('@/views/pages/authentication/Login.vue'),
     meta: {
       layout: 'full',
-   
-  
-  
+      resource: 'Auth',
+      redirectIfLoggedIn: true,
     },
   },
   {
-    path: '/login',
-    name: 'auth-login',
+    path: '/pages/authentication/login-v1',
+    name: 'auth-login-v1',
     component: () => import('@/views/pages/authentication/Login-v1.vue'),
     meta: {
       layout: 'full',
-      resource: 'Auth',
-      redirectIfLoggedIn: true,
-  
-     
     },
   },
 
   {
-    path: '/pages/authentication/register-v1',
-    name: 'auth-register-v1',
+    path: '/register',
+    name: 'auth-register',
     component: () => import('@/views/pages/authentication/Register.vue'),
     meta: {
       layout: 'full',
-  
+      resource: 'Auth',
+      redirectIfLoggedIn: true,
     },
   },
   {
-    
-    path: '/register',
-    name: 'auth-register',
+    path: '/pages/authentication/register-v1',
+    name: 'auth-register-v1',
     component: () => import('@/views/pages/authentication/Register-v1.vue'),
     meta: {
       layout: 'full',
-      resource: 'Auth',
-      redirectIfLoggedIn: true,
-
     },
   },
 
@@ -72,20 +63,15 @@ export default [
     component: () => import('@/views/pages/authentication/ForgotPassword-v1.vue'),
     meta: {
       layout: 'full',
-      resource: 'Auth',
-      redirectIfLoggedIn: true,
     },
   },
 
   {
-    path: '/pages/authentication/reset-password-v1/:id',
+    path: '/pages/authentication/reset-password-v1',
     name: 'auth-reset-password-v1',
     component: () => import('@/views/pages/authentication/ResetPassword-v1.vue'),
     meta: {
-
       layout: 'full',
-      resource: 'Auth',
-      redirectIfLoggedIn: true,
     },
   },
 
@@ -103,6 +89,7 @@ export default [
     component: () => import('@/views/pages/miscellaneous/NotAuthorized.vue'),
     meta: {
       layout: 'full',
+      resource: 'Auth',
     },
   },
   {
@@ -157,21 +144,74 @@ export default [
   },
 
   {
-    path: '/pages/blog/:id',
-    name: 'pages-comp-detail',
-    component: () => import('@/views/apps/competition/CompetitionDetail.vue'),
+    path: '/pages/faq',
+    name: 'pages-faq',
+    component: () => import('@/views/pages/faq/Faq.vue'),
     meta: {
-      pageTitle: 'Détailes de la compétition',
+      pageTitle: 'FAQ',
       breadcrumb: [
-       
         {
-          text: 'Compétition',
+          text: 'Pages',
         },
         {
-          text: 'Détailes',
+          text: 'FAQ',
           active: true,
         },
       ],
+    },
+  },
+  {
+    path: '/pages/knowledge-base',
+    name: 'pages-knowledge-base',
+    component: () => import('@/views/apps/competition/KnowledgeBase.vue'),
+
+  },
+  {
+    path: '/pages/knowledge-base/:category',
+    name: 'pages-knowledge-base-category',
+    component: () => import('@/views/apps/competition/KnowledgeBaseCategory.vue'),
+    meta: {
+      pageTitle: 'Category',
+      breadcrumb: [
+        {
+          text: 'Pages',
+        },
+        {
+          text: 'Knowledge Base',
+          to: '/pages/Knowledge-base',
+        },
+        {
+          text: 'Category',
+          active: true,
+        },
+      ],
+      navActiveLink: 'pages-knowledge-base',
+    },
+  },
+  {
+    path: '/pages/knowledge-base/:category/:slug',
+    name: 'pages-knowledge-base-question',
+    component: () => import('@/views/apps/competition/KnowledgeBaseCategoryQuestion.vue'),
+    meta: {
+      pageTitle: 'Question',
+      breadcrumb: [
+        {
+          text: 'Pages',
+        },
+        {
+          text: 'Knowledge Base',
+          to: '/pages/Knowledge-base',
+        },
+        {
+          text: 'Category',
+          to: '/pages/Knowledge-base/category',
+        },
+        {
+          text: 'Question',
+          active: true,
+        },
+      ],
+      navActiveLink: 'pages-knowledge-base',
     },
   },
 

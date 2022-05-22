@@ -3,84 +3,99 @@
 <div>
   <b-card no-body>
     <h1>test</h1>
+  
       <b-row>
-  <b-col lg="1">
-      <b-button
+  <b-col lg="11">
+          </b-col>
+       
+                <b-col lg="1">
+              <b-button
+              style="float:right"
+
       v-ripple.400="'rgba(255, 255, 255, 0.15)'"
       variant="warning"
       class="btn-icon rounded-circle"
-      @click="$router.push( { path: `/apps/competitions/matches/${idCat}`})"
     >
       <feather-icon icon="DownloadIcon" />
     </b-button>
           </b-col>
-            <b-col lg="11">
-          </b-col>
- 
-    </b-row>
-    <b-row>
-      <br>
-      </b-row>
-          <b-row>
-  <div class="tournament-bracket tournament-bracket--rounded">                                                     
-    <div class="tournament-bracket__round tournament-bracket__round--gold"
-     v-for="(round, roundIndex) of rounds"
-      :key="roundIndex"
-    >
-      <h3 class="tournament-bracket__round-title">{{round.name}}</h3>
-      <ul class="tournament-bracket__list">
-        <li class="tournament-bracket__item" v-for="(m, mIndex) of round.Matches"
-      :key="mIndex">
-          <div class="tournament-bracket__match" tabindex="0">
-            <table class="tournament-bracket__table">
-              <caption class="tournament-bracket__caption">
-                <time datetime="1998-02-18">18 February 1998</time>
-              </caption>
-              <thead class="sr-only">
-                <tr>
-                  <th>Country</th>
-                  <th>Score</th>
-                </tr>
-              </thead>  
-              <tbody class="tournament-bracket__content">
-                <tr class="tournament-bracket__team tournament-bracket__team--winner">
-                  <td class="tournament-bracket__country">
-                    <abbr class="tournament-bracket__code" title="Canada">{{m.player1}}</abbr>
-                    <span class="tournament-bracket__flag flag-icon flag-icon-ca" aria-label="Flag"></span>
-                  </td>
-                  <td class="tournament-bracket__score">
-                    <span class="tournament-bracket__number">  
-                       <input  style="width: 20px"  v-model="m.palyer1_score" @change="appel(m.matchIndex,round.nb_matches,round.id,round.roundIndex,m.palyer1_score,m.player2_score)"></input>
-                       </span>
-                  </td>
-                </tr>
-                <tr class="tournament-bracket__team">
-                  <td class="tournament-bracket__country">
-                    <abbr class="tournament-bracket__code" title="Kazakhstan">{{m.player2}}</abbr>
-                    <span class="tournament-bracket__flag flag-icon flag-icon-kz" aria-label="Flag"></span>
-                  </td>
-                  <td class="tournament-bracket__score">
-                    <span class="tournament-bracket__number">  
-                      <input  style="width: 20px" v-model="m.player2_score" @change="appel(m.matchIndex,round.nb_matches,round.id,round.roundIndex,m.palyer1_score,m.player2_score)"></input>
-                   </span>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </li>
-
+         
        
-      </ul>
-    </div>
- 
- 
-  </div>
+      </b-row>
+      <b-row>
         </b-row>
+        <br>
+          <b-row>
 
+        </b-row>
     
-   
+    <b-row   v-for="(round, roundIndex) of rounds"
+      :key="roundIndex">
+    <b-col lg="12">
+       <h1>  {{round.name}}</h1>
+            <b-card v-for="(m, mIndex) of round.Matches"
+      :key="mIndex">
+               <b-row>
+                        <b-col lg="4">
+                           <div class="d-flex justify-content-start">
+          <b-avatar
+          src="@/assets/images/karate.jpg" size="6rem"
+          />
+          <div class="d-flex flex-column ml-1">
+            <div class="mb-1">
+              <h4 class="mb-0">
+                {{m.player1}}
+              </h4>
+              <span class="card-text">kjkjjj </span>
+            </div>
+            <div class="d-flex flex-wrap">
+             
+            </div>
+          </div>
+          </div>
+                           </b-col > 
+                           <b-col lg="1">
+                                                          {{m.palyer1_score}}
 
+                           </b-col>
+                            <b-col lg="2">
+                    
+                            <b-img src="@/assets/images/versus.png" class="img"></b-img>
+                      
+
+                             </b-col>  
+                             <b-col lg="1">
+                                                            {{m.player2_score}}
+
+                           </b-col>  
+                             <b-col lg="4">
+                                              <div class="d-flex justify-content-end">
+          
+          <div class="d-flex .flex-column-reverse ml-1">
+            <div class="mb-1">
+              <h4 class="mb-0">
+                {{m.player2}}
+              </h4>
+              <span class="card-text">kjkjjj </span>
+            </div>
+            <div class="d-flex flex-wrap">
+             
+            </div>
+          </div>
+          <b-avatar
+          src="@/assets/images/karate.jpg" size="6rem"
+          />
+          </div>
+                          </b-col >     
+  
+                 </b-row>
+
+                
+          
+             </b-card>
+          </b-col>
+    </b-row>
+  
   </b-card>
 </div>
   

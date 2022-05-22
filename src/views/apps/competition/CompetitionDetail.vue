@@ -1,122 +1,78 @@
 <template>
-  <section class="app-ecommerce-details">
+  <div>
+    <!-- search input -->
+    <section id="kb-category-search">
+      <b-card
+        no-body
+        class="knowledge-base-bg text-center"
+        :style="{backgroundImage: `url(${require('@/assets/images/bannerimg.jpg')})`}"
+      >
+        <b-card-body class="card-body">
+          <h2 class="text-primary">
+            Dedicated Source Used on Website
+          </h2>
+          <b-card-text class="mb-2">
+            <span>Popular searches: </span>
+            <span class="font-weight-bolder">Sales automation, Email marketing</span>
+          </b-card-text>
 
-    <!-- Alert: No item found -->
-    <b-alert
-      variant="danger"
-      :show="blogDetail === undefined"
-    >
-      <h4 class="alert-heading">
-        Error fetching product data
-      </h4>
-      <div class="alert-body">
-        No item found with this item slug. Check
-        <b-link
-          class="alert-link"
-          :to="{ name: 'apps-e-commerce-shop'}"
+          <!-- form -->
+          <b-form class="kb-search-input">
+            <b-input-group class="input-group-merge">
+              <b-input-group-prepend is-text>
+                <feather-icon icon="SearchIcon" />
+              </b-input-group-prepend>
+              <b-form-input
+                id="searchbar"
+                placeholder="Ask a question...."
+              />
+            </b-input-group>
+          </b-form>
+          <!-- form -->
+        </b-card-body>
+      </b-card>
+    </section>
+    <!--/ search input -->
+
+    <div id="knowledge-base-category">
+      <b-row class="match-height">
+        <b-col
+          v-for="(cat) in blogDetail.Categories"
+          :key="cat.id"
+          md="6"
+          sm="6"
         >
-          Shop
-        </b-link>
-        for other items.
-      </div>
-    </b-alert>
-
-    <!-- Content -->
-    <b-card v-if="blogDetail"
-      no-body
-    >
-      <b-card-body>
-         <swiper
-    class="swiper-parallax"
-    :options="swiperOptions"
-    :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
-  >
-    <div
-      slot="parallax-bg"
-      class="parallax-bg"
-      data-swiper-parallax="-23%"
-    >
-      <b-img
-        class="img-fluid"
-        :src="require('@/assets/images/banner/img.jpg')"
-        alt="banner"
-      />
-    </div>
-
-    <swiper-slide
-      v-for="(data,index) in swiperData"
-      :key="index"
-    >
-      <div
-        class="title"
-        data-swiper-parallax="-300"
-      >
-        {{ blogDetail.name }}
-      </div>
-      <div
-        class="subtitle"
-        data-swiper-parallax="-200"
-      >
-        {{ blogDetail.start }} | {{blogDetail.end}}
-      </div>
-      <div
-        class="text"
-        data-swiper-parallax="-100"
-      >
-        <b-card-text>
-          {{ blogDetail.description }}
-        </b-card-text>
-      </div>
-    </swiper-slide>
-
-    <div
-      slot="pagination"
-      class="swiper-pagination"
-    />
-    <div
-      slot="button-next"
-      class="swiper-button-next"
-    />
-    <div
-      slot="button-prev"
-      class="swiper-button-prev"
-    />
-  </swiper>
-
-       <b-row class="my-2" >
-         <b-col
-            cols="12"
-            md="7"
-          >
-          <h4>{{ blogDetail.name }}</h4>
-          </b-col>
-              <b-col
-              md="12"
-              v-for="(cat) in blogDetail.Categories" :key="cat.id" >
-            <!-- user commnets -->
-        <table class="mt-2 mt-xl-0 w-100" >
-            <tr>
-            <th class="pb-50">
+          <b-card>
+             <b-row>
+                <b-col md="10">
+            <h6 class="kb-title">
               <feather-icon
+                icon="UserIcon"
+                size="20"
+                class="mr-50"
+              />{{ cat.nameCat }} 
+            </h6>
+             </b-col>
+
+               <b-col md="2">
+                 <b-button   @click="$router.push( { path: `/apps/competitions/players/${cat.id}`})">kk</b-button>
+                 </b-col>
+               </b-row>
+             <b-row>
+               <b-col md="4">  <feather-icon
                 icon="Edit3Icon"
                 class="mr-75"
               />
-              <span class="font-weight-bold">Titre</span>
-            </th>
-            <td class="pb-50 text-capitalize">
-              {{cat.nameCat}}
-            </td>
-          </tr>
-           <tr>
-            <th class="pb-50">
-              <feather-icon
-                icon="CalendarIcon"
+              <span class="font-weight-bold">Titre</span></b-col>
+               <b-col md="8">{{cat.nameCat}}</b-col>
+            </b-row>
+             <b-row>
+               <b-col md="4"> <feather-icon
+                icon="Edit3Icon"
                 class="mr-75"
               />
-              <span class="font-weight-bold">Dates</span>
-            </th>
-            <td class="pb-50 text-capitalize">
-                <b-media no-body>
+              <span class="font-weight-bold">Dates</span></b-col>
+               <b-col md="8"> <b-media no-body>
              
               <b-media-body>
                 <small>
@@ -131,119 +87,79 @@
                 </b-link>
                 </small>
               </b-media-body>
-            </b-media>
-            </td>
-          </tr>
-            <tr>
-            <th class="pb-50">
-              <feather-icon
-                icon="CheckIcon"
+            </b-media></b-col>
+            </b-row>
+             <b-row>
+               <b-col md="4"> <feather-icon
+                icon="Edit3Icon"
                 class="mr-75"
               />
-              <span class="font-weight-bold">Type</span>
-            </th>
-            <td class="pb-50 text-capitalize">
-              {{cat.type}}
-            </td>
-          </tr>
-          <tr>
-            <th class="pb-50">
-              <feather-icon
-                icon="UsersIcon"
+              <span class="font-weight-bold">Poids</span></b-col>
+               <b-col md="8">     <b-row v-for="(w,index) in cat.weight.split('/')" :key="index">
+    <b-col>{{ w }}</b-col>
+    
+  </b-row></b-col>
+            </b-row>
+             <b-row>
+               <b-col md="4"> <feather-icon
+                icon="Edit3Icon"
                 class="mr-75"
               />
-              <span class="font-weight-bold">Sexe</span>
-            </th>
-            <td class="pb-50">
-              {{ cat.sexe }}
-            </td>
-          </tr>
-          <tr>
-            <th>
-              <feather-icon
-                icon="UsersIcon"
-                class="mr-75"
-              />
-
-              <span class="font-weight-bold">Poids</span>
-            </th>
-             <td class="pb-50 text-capitalize">
-            <b-row v-for="(w,index) in cat.weight.split('/')" :key="index">
+              <span class="font-weight-bold">Age</span></b-col>
+               <b-col md="8">                <b-row  v-for="(w,index) in cat.age.split('/')" :key="index">
     <b-col>{{ w }}</b-col>
     
   </b-row>
-              
-            </td> 
-          
-          </tr>
-             <tr>
-            <th>
-              <feather-icon
-                icon="UsersIcon"
-                class="mr-75"
-              />
-
-              <span class="font-weight-bold">Age</span>
-            </th>
-             <td class="pb-50 text-capitalize">
-                       <b-row  v-for="(w,index) in cat.age.split('/')" :key="index">
-    <b-col>{{ w }}</b-col>
-    
-  </b-row>
+  </b-col>
+            </b-row>
             
-            </td> 
-          </tr>
-        </table>
+               <b-row>
+               <b-col md="4"> <feather-icon
+                icon="Edit3Icon"
+                class="mr-75"
+              />
+              <span class="font-weight-bold">Sexe</span></b-col>
+               <b-col md="8">{{cat.sexe}}</b-col>
+            </b-row>
+             <b-row>
+               <b-col md="4"> <feather-icon
+                icon="Edit3Icon"
+                class="mr-75"
+              />
+              <span class="font-weight-bold">Type</span></b-col>
+               <b-col md="8">{{cat.type}}</b-col>
+            </b-row>
 
        
-                    <hr class="my-2">
+          </b-card>
+        </b-col>
 
-                  </b-col>
-
-           </b-row>
-
-      </b-card-body>
-
-      <!-- Static Content -->
-  <e-commerce-product-details-item-features/>
-      <!-- Static Content -->
-      <!-- Slider: Related Products -->
-<participant :user-data="participantList"/> 
-        <b-row class="my-2">
-
- <b-col
-            cols="12"
-            md="7"
-          >
-            <div class="d-flex flex-column flex-sm-row pt-1">
-              <b-button
-                v-ripple.400="'rgba(255, 255, 255, 0.15)'"
-                variant="primary"
-                class="btn-cart mr-0 mr-sm-1 mb-1 mb-sm-0"
-               :to="{ name: 'apps-competitions-division', params: { id: blogDetail.id } }"
-
-              >
-                <feather-icon
-                  icon="UserIcon"
-                  class="mr-50"
-                />
-                <span>Voir joueurs par division</span>
-              </b-button>
-            </div>
-          </b-col>
-        </b-row>
-   </b-card>
-  </section>
+        <!-- no result found -->
+     <!--    <b-col
+          v-show="!filteredKB.length"
+          cols="12"
+          class="text-center"
+        >
+          <h4 class="mt-4">
+            Search result not found!!
+          </h4>
+        </b-col> -->
+        <!--/ no result found -->
+      </b-row>
+    </div>
+  </div>
 </template>
 
 <script>
 import { useRouter } from '@core/utils/utils'
+
 import store from '@/store'
 
 import ECommerceProductDetailsItemFeatures from './ECommerceProductDetailsItemFeatures.vue'
 import ECommerceProductDetailsRelatedProducts from './ECommerceProductDetailsRelatedProducts.vue'
 
-import {
+import {   BListGroup, BListGroupItem, BForm, BInputGroup, BInputGroupPrepend, BFormInput,
+
   BCard, BCardBody, BRow, BCol, BImg, BCardText, BLink, BButton, BDropdown, BDropdownItem, BAlert,BBadge,
 BAvatar, BMedia,BMediaBody,BAvatarGroup
 } from 'bootstrap-vue'
@@ -264,6 +180,7 @@ export default {
   },
   components: {
     // BSV
+    BListGroup, BListGroupItem, BForm, BInputGroup, BInputGroupPrepend, BFormInput,
     BAvatarGroup,
     Swiper,
     BBadge,
@@ -299,10 +216,10 @@ export default {
       userData:null,
       latestComp:null,
       query:'',
-      show:true,
+      show:b-rowue,
       idComp:'',
       idCat:'',
-      allowParticip:true,
+      allowParticip:b-rowue,
       socialShareIcons: [
         'GithubIcon',
         'GitlabIcon',
@@ -318,10 +235,10 @@ export default {
       ],
       swiperOptions: {
         speed: 600,
-        parallax: true,
+        parallax: b-rowue,
         pagination: {
           el: '.swiper-pagination',
-          clickable: true,
+          clickable: b-rowue,
         },
         navigation: {
           nextEl: '.swiper-button-next',
@@ -352,7 +269,7 @@ export default {
                       title: 'Participation Ok',
                       icon: 'CoffeeIcon',
                       variant: 'success',
-                      text: 'Votre demande d\'inscription a été bien enregistrer nous traitons votre demande dans le bref délais',
+                      text: 'Vob-rowe demande d\'inscription a été bien enregisb-rower nous b-rowaitons vob-rowe demande dans le bref délais',
                     },
                   })
 
@@ -367,7 +284,7 @@ export default {
             userId:JSON.parse(localStorage.getItem("userData")).id
           }).then(response=>{
              if(response.status===201)
-            {this.show=true}
+            {this.show=b-rowue}
            if(response.status===200) {
               this.show=false}
              console.log(this.show)
@@ -436,6 +353,6 @@ export default {
     </script>
 
 <style lang="scss">
-@import "~@core/scss/base/pages/app-ecommerce-details.scss";
+@import '@core/scss/vue/pages/page-knowledge-base.scss';
 
 </style>

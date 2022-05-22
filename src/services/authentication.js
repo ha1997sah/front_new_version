@@ -196,5 +196,8 @@ export default {
     },
     stat(){
         return Api().get('stat')
+    },
+    eventByCat(credentials){
+        return Api().post('eventByCat',credentials)
     }
 }
