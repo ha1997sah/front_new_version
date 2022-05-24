@@ -147,7 +147,11 @@ export default [
   // *===============================================---*
   // *--------- USER ---- ---------------------------------------*
   // *===============================================---*
- 
+  {
+    path: '/apps/admins/list',
+    name: 'apps-admins-list',
+    component: () => import('@/views/apps/user/users-list/AdminList.vue'),
+  },
   {
     path: '/apps/athletes/list',
     name: 'apps-athletes-list',

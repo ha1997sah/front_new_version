@@ -9,11 +9,11 @@
       >
         <b-card-body class="card-body">
           <h2 class="text-primary">
-            Dedicated Source Used on Website
+            {{blogDetail.name}}
           </h2>
           <b-card-text class="mb-2">
-            <span>Popular searches: </span>
-            <span class="font-weight-bolder">Sales automation, Email marketing</span>
+            <span>Biennvenue de la page de l'événement: </span>
+            <span class="font-weight-bolder">{{blogDetail.name}}</span>
           </b-card-text>
 
           <!-- form -->
@@ -24,7 +24,7 @@
               </b-input-group-prepend>
               <b-form-input
                 id="searchbar"
-                placeholder="Ask a question...."
+                placeholder="Tapez ici ..."
               />
             </b-input-group>
           </b-form>
@@ -44,7 +44,7 @@
         >
           <b-card>
              <b-row>
-                <b-col md="10">
+                <b-col md="6">
             <h6 class="kb-title">
               <feather-icon
                 icon="UserIcon"
@@ -54,12 +54,22 @@
             </h6>
              </b-col>
 
-               <b-col md="2">
-                 <b-button   @click="$router.push( { path: `/apps/competitions/players/${cat.id}`})">kk</b-button>
+               <b-col md="6">
+                 <b-button
+              style="float:right"
+
+      v-ripple.400="'rgba(255, 255, 255, 0.15)'"
+      variant="primary"
+      class="btn-icon rounded-circle"
+       @click="$router.push( { path: `/apps/competitions/players/${cat.id}`})"
+    >
+      <feather-icon icon="UserIcon" />
+    </b-button>
                  </b-col>
                </b-row>
              <b-row>
-               <b-col md="4">  <feather-icon
+               <b-col md="4"> 
+                  <feather-icon
                 icon="Edit3Icon"
                 class="mr-75"
               />
@@ -68,7 +78,7 @@
             </b-row>
              <b-row>
                <b-col md="4"> <feather-icon
-                icon="Edit3Icon"
+                icon="ClockIcon"
                 class="mr-75"
               />
               <span class="font-weight-bold">Dates</span></b-col>
@@ -77,32 +87,28 @@
               <b-media-body>
                 <small>
                   <b-link class="text-body">           
-                       {{ new Date(cat.start).getDate()+'-'+new Date(cat.start).getMonth()+'-'+new Date(cat.start).getFullYear()}}
+                       {{ new Date(cat.Event_Category.categoryDate).getDate()+'-'+new Date(cat.Event_Category.categoryDate).getMonth()+'-'+new Date(cat.Event_Category.categoryDate).getFullYear()}}
                        </b-link>
                 </small>
-                <span class="text-muted ml-75 mr-50">|</span>
-                <small class="text-muted">
-                   <b-link class="text-body">           
-                       {{ new Date(cat.end).getDate()+'-'+new Date(cat.end).getMonth()+'-'+new Date(cat.end).getFullYear()}}
-                </b-link>
-                </small>
+               
               </b-media-body>
             </b-media></b-col>
             </b-row>
              <b-row>
                <b-col md="4"> <feather-icon
-                icon="Edit3Icon"
+                icon="SquareIcon"
                 class="mr-75"
               />
               <span class="font-weight-bold">Poids</span></b-col>
-               <b-col md="8">     <b-row v-for="(w,index) in cat.weight.split('/')" :key="index">
+               <b-col md="8">    
+                  <b-row v-for="(w,index) in cat.weight.split('/')" :key="index">
     <b-col>{{ w }}</b-col>
     
   </b-row></b-col>
             </b-row>
              <b-row>
                <b-col md="4"> <feather-icon
-                icon="Edit3Icon"
+                icon="TriangleIcon"
                 class="mr-75"
               />
               <span class="font-weight-bold">Age</span></b-col>
@@ -115,7 +121,7 @@
             
                <b-row>
                <b-col md="4"> <feather-icon
-                icon="Edit3Icon"
+                icon="UsersIcon"
                 class="mr-75"
               />
               <span class="font-weight-bold">Sexe</span></b-col>
@@ -123,7 +129,7 @@
             </b-row>
              <b-row>
                <b-col md="4"> <feather-icon
-                icon="Edit3Icon"
+                icon="StarIcon"
                 class="mr-75"
               />
               <span class="font-weight-bold">Type</span></b-col>
@@ -320,6 +326,7 @@ export default {
  
     store.dispatch('app-competition/fetchCompetitionById', { id: router.currentRoute.params.id })
       .then(response => { blogDetail.value = response.data.competition ,
+      console.log(blogDetail.value),
            blogDetail.value.image=`http://localhost:3001/${response.data.competition.image}`,
             date.value = new Date(response.data.competition.start),
             end.value = new Date(response.data.competition.end),

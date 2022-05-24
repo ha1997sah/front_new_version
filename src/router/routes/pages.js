@@ -12,7 +12,8 @@ export default [
   {
     path: '/login',
     name: 'auth-login',
-    component: () => import('@/views/pages/authentication/Login.vue'),
+    component: () => import('@/views/pages/authentication/Login-v1.vue'),
+
     meta: {
       layout: 'full',
       resource: 'Auth',
@@ -22,7 +23,7 @@ export default [
   {
     path: '/pages/authentication/login-v1',
     name: 'auth-login-v1',
-    component: () => import('@/views/pages/authentication/Login-v1.vue'),
+    component: () => import('@/views/pages/authentication/Login.vue'),
     meta: {
       layout: 'full',
     },
@@ -31,7 +32,8 @@ export default [
   {
     path: '/register',
     name: 'auth-register',
-    component: () => import('@/views/pages/authentication/Register.vue'),
+    component: () => import('@/views/pages/authentication/Register-v1.vue'),
+
     meta: {
       layout: 'full',
       resource: 'Auth',
@@ -41,7 +43,7 @@ export default [
   {
     path: '/pages/authentication/register-v1',
     name: 'auth-register-v1',
-    component: () => import('@/views/pages/authentication/Register-v1.vue'),
+    component: () => import('@/views/pages/authentication/Register.vue'),
     meta: {
       layout: 'full',
     },
@@ -161,7 +163,7 @@ export default [
     },
   },
   {
-    path: '/pages/knowledge-base',
+    path: '/pages/knowledge',
     name: 'pages-knowledge-base',
     component: () => import('@/views/apps/competition/KnowledgeBase.vue'),
 

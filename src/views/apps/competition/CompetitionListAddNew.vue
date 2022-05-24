@@ -112,35 +112,40 @@
           </validation-provider>
 
          
-    
-          <!-- User Role -->
-           <validation-provider
-            #default="validationContext"
-            name="Age"
-           rules="required"
-
-          >
-            <b-form-group
+        <div class="form-group" v-for="(input,k) in inputs" :key="k">
+   <b-row>
+      <b-col md="6">
+       
+             <b-form-group
               label="Catégorie d'age"
               label-for="age"
               rules="required"
-
-
             >
-            <multiselect
-      v-model="selectedCategories"
+            <v-select
+      v-model="input.idCategory"
       :options="roleOptions"
-        :multiple="true"
-        track-by="value"
-  label="label"
-      >
-    </multiselect>
-
-              <b-form-invalid-feedback>
-                {{ validationContext.errors[0] }}
-              </b-form-invalid-feedback>
+         label="label"
+      />
             </b-form-group>
-          </validation-provider>
+
+       </b-col>
+      <b-col md="6">
+       <b-form-group >      
+     <b-form-datepicker
+      class="mb-1"
+      v-model="input.dateCategory"
+
+      />
+     </b-form-group>
+        </b-col>
+        </b-row>
+    <span>
+        <i @click="remove(k)" v-show="k || ( !k && inputs.length > 1)">supprimer</i>
+        <i  @click="add(k)" v-show="k == inputs.length-1">ajouter</i>
+    </span>
+</div>
+          <!-- User Role -->
+         
           
               <validation-provider
             #default="validationContext"
@@ -259,7 +264,7 @@
 
 <script>
 import {
-  BSidebar, BForm,BFormFile,BFormDatepicker, BFormGroup, BFormInput, BFormInvalidFeedback, BButton,
+  BSidebar, BForm,BFormFile,BFormDatepicker, BFormGroup, BFormInput, BFormInvalidFeedback, BButton,BCol,BRow
 } from 'bootstrap-vue'
 import { ValidationProvider, ValidationObserver } from 'vee-validate'
 import { ref } from '@vue/composition-api'
@@ -284,11 +289,13 @@ export default {
     BFormFile,
     BFormDatepicker,
     BForm,
+    BRow,
     BFormGroup,
     BFormInput,
     BFormInvalidFeedback,
     BButton,
     vSelect,
+    BCol,
 
     // Form Validation
     ValidationProvider,
@@ -336,6 +343,15 @@ export default {
 
     }
   },
+      methods:{
+       add(index) {
+            this.inputs.push({ name: '' });
+            console.log(this.inputs)
+        },
+        remove(index) {
+            this.inputs.splice(index, 1);
+        },
+    },
   setup(props, { emit }) {
         const toast = useToast()
     const selectedCategories= ref(null)
@@ -351,7 +367,12 @@ export default {
     }
    
            const file = ref(null)
-
+    const  inputs= ref( [
+            {   
+                idCategory: '',
+                dateCategory:''
+            }
+  ])
     const clubData = ref(JSON.parse(JSON.stringify(blankclubData)))
     const resetclubData = () => {
       clubData.value = JSON.parse(JSON.stringify(blankclubData))
@@ -364,9 +385,6 @@ export default {
                  const ch= ref("")
 
     const onSubmit = () => {
-     selectedCategories.value.forEach(element => ch.value+=element.value+"/")
-     console.log(ch.value)
-
       const formData = new FormData()
       formData.append('name',clubData.value.name)
       formData.append('start',clubData.value.start)
@@ -374,7 +392,7 @@ export default {
       formData.append('location',clubData.value.location)
       formData.append('description',clubData.value.description)
       formData.append('compImage',file.value)
-      formData.append('categories',ch.value)
+      formData.append('categories',JSON.stringify(inputs.value))
       formData.append('deadline',clubData.value.deadline)
     
 
@@ -410,6 +428,7 @@ export default {
       selectFile,
       file,
       selectedCategories,
+      inputs,
       
     }
   },

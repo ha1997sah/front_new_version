@@ -105,7 +105,7 @@ export default {
           .catch(error => reject(error))
       })
     },
-    addUser(ctx, userData) {
+    addAdmin(ctx, userData) {
       return new Promise((resolve, reject) => {
         authentication.addAdmin(userData)
           .then(response => resolve(response))

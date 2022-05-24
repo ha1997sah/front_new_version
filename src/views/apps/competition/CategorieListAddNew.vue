@@ -1,4 +1,5 @@
 <template>
+
   <b-sidebar
     id="add-new-user-sidebar"
     :visible="isAddNewUserSidebarActive"
@@ -63,30 +64,29 @@
               </b-form-invalid-feedback>
             </b-form-group>
           </validation-provider>
-
+             
           <!-- type -->
-          <validation-provider
+            <validation-provider
             #default="validationContext"
             name="Type"
-           rules="required"
-
           >
             <b-form-group
               label="Type"
-              label-for="type"
+              :state="getValidationState(validationContext)"
             >
-              <b-form-input
-                id="type"
-                v-model="clubData.type"
-                :state="getValidationState(validationContext)"
-                trim
+              <v-select
+                v-model="selectedType"
+                :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+                :options="karateOptions"
+                :clearable="false"
+                input-id="karate_type"
               />
-
-              <b-form-invalid-feedback>
+              <b-form-invalid-feedback :state="getValidationState(validationContext)">
                 {{ validationContext.errors[0] }}
               </b-form-invalid-feedback>
             </b-form-group>
           </validation-provider>
+        
 
              <validation-provider
             #default="validationContext"
@@ -167,25 +167,6 @@
             </b-form-group>
           </validation-provider>    
 
-
-
-                <b-form-group>
-          <h5>Date Début</h5>
-          <flat-pickr
-            v-model="dateStart"
-            class="form-control"
-            :config="{ enableTime: true,dateFormat: 'Y-m-d H:i'}"
-          />
-        </b-form-group>
-
-               <b-form-group>
-          <h5>Date Fin</h5>
-          <flat-pickr
-            v-model="dateEnd"
-            class="form-control"
-            :config="{ enableTime: true,dateFormat: 'Y-m-d H:i'}"
-          />
-        </b-form-group>
 
      
     
@@ -300,7 +281,7 @@ export default {
     const selectedWeight=ref(null)
     const dateStart=ref(null)
     const dateEnd=ref(null)
-
+    const karateOptions= ref(['Kata','Kumite','Groupe Kata','Groupe Kumite'])
     const yearOptions= ref(['2000', '2001', '2002'])
     const weightOptions= ref(['75 kg', '50 kg', '54 kg'])
 
@@ -313,7 +294,8 @@ export default {
       password: '',
       role:null,
       error:null,
-    }
+    }     
+           const selectedType=ref("")
            const file = ref(null)
            const ch= ref("")
            const strWeight=ref("")
@@ -330,9 +312,9 @@ export default {
        selectedDate.value.forEach(element => console.log(ch.value+=element+"/"))
        selectedWeight.value.forEach(element => console.log(strWeight.value+=element+"/"))
       store.dispatch('app-competition/addCategory',{
-        nameCat:clubData.value.nameCat,
+        nameCat:selectedType.value +":"+clubData.value.nameCat,
         sexe:selected.value,
-        type:clubData.value.type,
+        type:selectedType.value,
         age:ch.value,
         weight:strWeight.value,
         start:dateStart.value,
@@ -377,6 +359,8 @@ export default {
       selectedWeight,
       dateStart,
       dateEnd,
+      karateOptions,
+      selectedType
     }
   },
 }

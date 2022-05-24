@@ -2,26 +2,30 @@
 <div>
 <div>
   <b-card no-body>
-    <h1>test</h1>
-  
-      <b-row>
-  <b-col lg="11">
-          </b-col>
+<b-row>
+      <b-col lg="8">
+         <div class="m-2">
+       {{category.nameCat}}
+        </div>
+      </b-col>
+      <b-col lg="4">
+         <div class="m-2">
        
-                <b-col lg="1">
-              <b-button
+            <b-button
               style="float:right"
 
       v-ripple.400="'rgba(255, 255, 255, 0.15)'"
-      variant="warning"
+      variant="primary"
       class="btn-icon rounded-circle"
+       @click="$router.push( { path: `/apps/competitions/matches/${idCat}`})"
     >
       <feather-icon icon="DownloadIcon" />
     </b-button>
-          </b-col>
-         
-       
-      </b-row>
+
+        </div>
+      </b-col>
+    
+    </b-row>  
       <b-row>
         </b-row>
         <br>
@@ -38,9 +42,12 @@
                <b-row>
                         <b-col lg="4">
                            <div class="d-flex justify-content-start">
+                                       <div class="d-flex flex-column ml-1">
+
           <b-avatar
           src="@/assets/images/karate.jpg" size="6rem"
           />
+          </div>
           <div class="d-flex flex-column ml-1">
             <div class="mb-1">
               <h4 class="mb-0">
@@ -55,7 +62,12 @@
           </div>
                            </b-col > 
                            <b-col lg="1">
-                                                          {{m.palyer1_score}}
+                              <b-avatar
+      size="lg"
+      variant="light-primary"
+      :text="m.palyer1_score"
+    />
+        
 
                            </b-col>
                             <b-col lg="2">
@@ -65,13 +77,17 @@
 
                              </b-col>  
                              <b-col lg="1">
-                                                            {{m.player2_score}}
+                                                                <b-avatar
+      size="lg"
+      variant="light-primary"
+      text="bye"
+    />
+        
 
                            </b-col>  
-                             <b-col lg="4">
-                                              <div class="d-flex justify-content-end">
-          
-          <div class="d-flex .flex-column-reverse ml-1">
+           <b-col lg="4">
+           <div class="d-flex justify-content-end">
+          <div class="d-flex flex-column ml-1">
             <div class="mb-1">
               <h4 class="mb-0">
                 {{m.player2}}
@@ -79,25 +95,23 @@
               <span class="card-text">kjkjjj </span>
             </div>
             <div class="d-flex flex-wrap">
-             
+      
             </div>
           </div>
+                    <div class="d-flex flex-column ml-1">
+
           <b-avatar
           src="@/assets/images/karate.jpg" size="6rem"
           />
           </div>
-                          </b-col >     
-  
-                 </b-row>
-
-                
-          
+          </div>
+           </b-col >     
+          </b-row>
              </b-card>
           </b-col>
-    </b-row>
-  
-  </b-card>
-</div>
+          </b-row>
+         </b-card>
+         </div>
   
  
 </div>

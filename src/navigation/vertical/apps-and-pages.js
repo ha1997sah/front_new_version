@@ -4,8 +4,8 @@ export default [
   },
  
   {
-    title: 'Utilisateurs',
-    route: 'apps-users-list',
+    title: 'Administrateurs',
+    route: 'apps-admins-list',
     icon: 'UserIcon',
   },
 

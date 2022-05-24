@@ -1,6 +1,10 @@
 <template>
   <div>
-    
+      <user-list-add-new
+      :is-add-new-user-sidebar-active.sync="isAddNewUserSidebarActive"
+      :role-options="roleOptions"
+      @refetch-data="refetchData"
+    />
     <!-- Filters -->
 <!--     <users-list-filters
       :role-filter.sync="roleFilter"
@@ -25,76 +29,42 @@
           <!-- Per Page -->
           <b-col
             cols="12"
-            md="3"
+            md="6"
+            class="d-flex align-items-center justify-content-start mb-1 mb-md-0"
           >
-       
-          Sexe
-         <v-select
-              v-model="selectedItem1"
-                :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
-                :options="roleOptions"
-                :clearable="false"
-                input-id="club-fed"
-                @input="filterBySexe"
-              />
-      
-      
+            <label>Show</label>
+            <v-select
+              v-model="perPage"
+              :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+              :options="perPageOptions"
+              :clearable="false"
+              class="per-page-selector d-inline-block mx-50"
+            />
+            <label>entries</label>
           </b-col>
-            <b-col
+
+          <!-- Search -->
+          <b-col
             cols="12"
-            md="3"
+            md="6"
           >
-         Niveau
-         <v-select
-              v-model="selectedItem2"
-                :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
-                :options="levels"
-                :clearable="false"
-                input-id="club-fed"
-                @input="filterByLevel"
+            <div class="d-flex align-items-center justify-content-end">
+              <b-form-input
+                class="d-inline-block mr-1"
+                placeholder="Rechercher..."
+
               />
-      
-      
+              <b-button
+                variant="primary"
+                @click="isAddNewUserSidebarActive = true"
+              >
+                <span class="text-nowrap">Ajouter utilisateur</span>
+              </b-button>
+            </div>
           </b-col>
-          
-   <b-col
-            cols="12"
-            md="3"
-          >
-         Club
-         <v-select
-              v-model="selectedItem3"
-                :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
-                :options="clubs"
-                :clearable="false"
-                input-id="club-users"
-                @input="filterByClub"
-              />
-      
-      
-          </b-col>
-          
-             <b-col
-            cols="12"
-            md="3"
-          >
-          Federation
-         <v-select
-              v-model="selectedItem4"
-                :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
-                :options="feds"
-                :clearable="false"
-                input-id="fed-users"
-                @input="filterByFed"
-              />
-      
-      
-          </b-col>
-          
         </b-row>
 
       </div>
-
       <b-table
         ref="refUserListTable"
         class="position-relative"
@@ -280,6 +250,7 @@ export default {
     BPagination,
     vSelect,
   },
+ 
   setup() {
       const toast = useToast()
 
@@ -413,7 +384,7 @@ usersItems.value=response.data.users
         })
       })}
 
-      // filter by club
+ 
 
      const filterByClub = () => {
    selectedItem1.value = "",

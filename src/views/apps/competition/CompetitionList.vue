@@ -143,7 +143,7 @@
               :to="{ name: 'apps-competition-detail', params: { id: data.item.id } }"
               class="font-weight-bold d-block text-nowrap"
             >
-                 {{ new Date(data.item.fin).getDate()+'-'+new Date(data.item.end).getMonth()+'-'+new Date(data.item.end).getFullYear()}}
+                 {{ new Date(data.item.end).getDate()+'-'+new Date(data.item.end).getMonth()+'-'+new Date(data.item.end).getFullYear()}}
 
             </b-link>
           </b-media>

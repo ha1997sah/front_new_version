@@ -7,7 +7,7 @@
       :role-options="roleOptions"
       :plan-options="planOptions"
       @refetch-data="refetchData"
-    />
+    />   
     <!-- Filters -->    
 <!--     <users-list-filters
       :role-filter.sync="roleFilter"
@@ -49,14 +49,26 @@
           <!-- Search -->
           <b-col
             cols="12"
-            md="6"
+            md="3"
           >
             <div class="d-flex align-items-center justify-content-end">
-              <b-form-input
-                v-model="searchQuery"
-                class="d-inline-block mr-1"
-                placeholder="Rechercher..."
-              />
+                  
+          <v-select
+            :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+            :value="roleFilter"
+            :options="karateOptions"
+            class="w-100"
+            :reduce="val => val.value"
+            @input="(val) => $emit('update:roleFilter', val)"
+          />
+            </div>
+          </b-col>
+          <b-col
+            cols="12"
+            md="3"
+          >
+            <div class="d-flex align-items-center justify-content-end">
+         
               <b-button
                 variant="primary"
                 @click="isAddNewUserSidebarActive = true"
@@ -202,7 +214,8 @@
 <script>
 import {
   BCard, BRow, BCol, BFormInput, BButton, BTable, BMedia, BAvatar, BLink,
-  BBadge, BDropdown, BDropdownItem, BPagination,
+  BBadge, BDropdown, BDropdownItem, BPagination,BCardHeader,BCardBody
+  
 } from 'bootstrap-vue'
 import vSelect from 'vue-select'
 import store from '@/store'
@@ -214,6 +227,8 @@ import CategorieListAddNew from './CategorieListAddNew.vue'
 
 export default {
   components: {
+    BCardBody,
+    BCardHeader,
     BCard,
     BRow,
     BCol,
@@ -240,6 +255,7 @@ export default {
       if (store.hasModule(COMPETITION_APP_STORE_MODULE_NAME)) store.unregisterModule(COMPETITION_APP_STORE_MODULE_NAME)
     })
     const isAddNewUserSidebarActive = ref(false)
+        const karateOptions= ref(['Kata','Kumite','Groupe Kata','Groupe Kumite'])
 
     const roleOptions = [
       { label: 'Fédération tunisienne de karaté', value: '1' },
@@ -289,7 +305,7 @@ export default {
       catColumns,
       isAddNewUserSidebarActive,
       fetchCategories,
-     
+      karateOptions,
       tableColumns,
       perPage,
       currentPage,

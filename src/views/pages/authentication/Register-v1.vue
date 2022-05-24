@@ -373,7 +373,7 @@
        
            <span class="d-none d-sm-inline">Etape 4</span>
         </template>
-                <div class="form-group" v-for="(input,k) in inputs" :key="k">
+     <div class="form-group" v-for="(input,k) in inputs" :key="k">
    <b-row>
       <b-col md="6">
        
@@ -381,16 +381,11 @@
 
        </b-col>
       <b-col md="6">
-    
-                <b-form-group
-            >
-             
+       <b-form-group >      
      <b-form-datepicker
       id="example-datepicker"
       v-model="input.recordDate"
-      class="mb-1"
-    />
-   
+      class="mb-1"/>
      </b-form-group>
         </b-col>
         </b-row>

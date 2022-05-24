@@ -2,11 +2,35 @@
 <div>
 <div>
   <b-card no-body>
-    <h1>test</h1>
+  <b-row>
+      <b-col lg="8">
+         <div class="m-2">
+       {{category.nameCat}}
+        </div>
+      </b-col>
+      <b-col lg="4">
+         <div class="m-2">
+       
+            <b-button
+              style="float:right"
+
+      v-ripple.400="'rgba(255, 255, 255, 0.15)'"
+      variant="primary"
+      class="btn-icon rounded-circle"
+       @click="$router.push( { path: `/apps/competitions/matches/${idCat}`})"
+    >
+      <feather-icon icon="DownloadIcon" />
+    </b-button>
+
+        </div>
+      </b-col>
+    
+    </b-row>
    
     
 <b-row>
-  <b-col lg="6">  
+  <b-col lg="8">  
+       <div class="m-2">
     <draggable
       class="list-group list-group-flush cursor-move"
       tag="ul"
@@ -20,77 +44,100 @@
           v-for="user in catUsers"
         :key="user.id"
           tag="li"
-         
+         class="d-flex justify-content-between"
+                         :to="{ name: 'apps-users-view', params: { id: user.id } }"
+
         >  
 
-          <div class="d-flex">
-            <div class="ml-25">
-              <b-card-text class="font-weight-bold mb-0">
-                  {{user.name}}
+              <b-avatar :text="user.name.slice(0,2)" />
+                <b-card-text >
+                  {{ user.name }}
+                </b-card-text>
+                 <b-card-text >
+                  {{ user.lastname }}
+                </b-card-text>
+                 <b-card-text >
+                  {{ user.Club.name}}
+                </b-card-text>
+                <b-card-text >
+                  {{ user.Federation.name}}
+                </b-card-text>
+                <b-dropdown
+            variant="link"
+            no-caret
+            :right="$store.state.appConfig.isRTL"
+          >
 
-              </b-card-text>
-            </div>
-          </div>
+            <template #button-content>
+              <feather-icon
+                icon="MoreVerticalIcon"
+                size="16"
+                class="align-middle text-body"
+              />
+            </template>
+            <b-dropdown-item :to="{ name: 'apps-users-view', params: { id: user.id } }">
+              <feather-icon icon="FileTextIcon" />
+              <span class="align-middle ml-50">Détailes</span>
+            </b-dropdown-item>
+
+              <b-dropdown-item  v-b-modal.modal-1  @click="sendInfo(user.id )">               
+              <feather-icon icon="TrashIcon" />
+              <span class="align-middle ml-50" >Eliminer</span>
+            </b-dropdown-item>
+          </b-dropdown>
         </b-list-group-item>
       </transition-group>
     </draggable>
-
+</div>
     <!-- code  -->
 
   </b-col>
-      <b-col lg="2"> 
-       </b-col>
+     
     <b-col lg="4"> 
       <b-row>
       <div>
-        <h4 class="text-uppercase mb-0">
-          Tirage au sort
+        <h4  style="float:center">
+         Options du tirage au sort
          </h4>
-        <small>Choissiez les options</small>
       </div>
      
     </b-row>
-    <!-- Algorithm options-->
-     <b-row>
-       <div>
-    <b-form-checkbox
+     <!-- Payment Terms -->
+      <div class="mt-2">
+          
+          <div class="d-flex justify-content-between align-items-center">
+            <label for="patymentTerms"> Single Elimination</label>
+             <b-form-checkbox
       v-model="algo"
       value="1"
       class="custom-control-danger"
       checked
     >
-      Single Elimination
     </b-form-checkbox>
-    <b-form-checkbox
+          </div>
+    <div class="d-flex justify-content-between align-items-center">
+            <label for="patymentTerms"> Double Elimination</label>
+             <b-form-checkbox
       v-model="algo"
       value="2"
-      class="custom-control-warning"
+      class="custom-control-danger"
+      checked
     >
-      Double Elimination
     </b-form-checkbox>
-    </div>
-        </b-row>
-
-        <!-- active seed-->
-     <b-row>
-       <div>
-      <b-card-text class="mb-0">
-        Seedez les jouoeurs
-      </b-card-text>
-
-      <b-form-checkbox
+          </div>
+          <!-- Client Notes -->
+          <div class="d-flex justify-content-between align-items-center my-1">
+            <label for="clientNotes">Seedez les joueurs</label>
+              <b-form-checkbox
         @change="open"
         v-model="checked"
         class="custom-control-primary"
         name="check-button"
         switch
       />
-  
-    </div>
-    </b-row>
- <b-row>
-       <div>
-       <b-button 
+          </div>
+            <div class="d-flex justify-content-between align-items-center my-1">
+                        <b-button  v-if="!show"
       v-ripple.400="'rgba(113, 102, 240, 0.15)'"
       v-b-toggle.sidebar-right
       variant="outline-primary"
@@ -98,7 +145,7 @@
     >
     TIRAGE
     </b-button>
-     <b-button
+          <b-button v-else
       v-ripple.400="'rgba(113, 102, 240, 0.15)'"
       v-b-toggle.sidebar-right
       variant="outline-primary"
@@ -106,12 +153,26 @@
     >
     Voir le tirage
     </b-button>
+              
+          </div>
+
+
+      
+
+ 
     </div>
-    </b-row>
+
+
+    
     </b-col>
 
   </b-row>
- 
+   <b-modal id="modal-1" title="BootstrapVue"
+     
+          @ok="eliminer">
+             <p class="my-4">Cette action ne peut pas être annulée!</p>
+  
+             </b-modal>
   </b-card>
 </div>
   
@@ -125,6 +186,7 @@ import Ripple from 'vue-ripple-directive'
 import authentication from '@/services/authentication.js'
 import AppCollapse from '@core/components/app-collapse/AppCollapse.vue'
 import AppCollapseItem from '@core/components/app-collapse/AppCollapseItem.vue'
+import ToastificationContent from '@core/components/toastification/ToastificationContent.vue'
 
 import draggable from 'vuedraggable'
 import Prism from 'vue-prism-component'
@@ -133,7 +195,7 @@ import 'prismjs/themes/prism-tomorrow.css'
 import {
 BButton,BTabs, BTab ,BCol,BRow,BCard,BLink,BImg,BCardText,BCardImg,BCardBody,BAvatar,
  BPopover,VBPopover,  BDropdown, BDropdownItem, BAlert, BListGroupItem,
- BMedia,BMediaBody,BCardGroup,BCardTitle, BSidebar, VBToggle,BListGroup,BFormCheckbox
+ BMedia,BMediaBody,BCardGroup,BCardTitle, BSidebar, VBToggle,BListGroup,BFormCheckbox,
 } from 'bootstrap-vue'
 
 import router from '@/router'
@@ -172,29 +234,62 @@ export default {
       show:false,
       comp:null,
       category:null,
-      idCat:router.currentRoute.params.id
+      idCat:router.currentRoute.params.id,
+           userId:"",
+
       
     
     }
 
 },
 created(){
-   authentication.hasRound({catId:"2"}).then(response=>{
+  
+   authentication.hasRound({catId:router.currentRoute.params.id}).then(response=>{
       this.show=response.data.show
     })
    authentication.findCometitionById("2").then(response=>{
    this.comp=response.data.competition,
-   this.users=this.comp.Users,
+   this.users=response.data.users
    this.categories=this.comp.Categories
   this.category=this.categories.find(element => element.id == router.currentRoute.params.id)
    this.catUsers=this.users.filter(user => user.Inscription.catId== router.currentRoute.params.id)
-   console.log(this.category)
+   console.log(this.catUsers)
    
   })
 
   
 },
 methods : {
+   sendInfo(info){
+     
+       this.userId=info },
+        eliminer() {
+      
+          authentication.eliminer ({
+         compId: "2" ,
+         userId:this.userId
+     
+        }) .then(() => {
+        this.$toast({
+          component: ToastificationContent,
+          props: {
+            title: 'Elimination effectué avec succces',
+            icon: 'AlertTriangleIcon',
+            variant: 'success',
+          },
+        })
+        this.$emit('refetch-data') 
+    }).catch(error=>{console.log(error),
+      this.$toast({
+      component: ToastificationContent,
+      props: {
+        title: 'problem',
+        icon: 'AlertTriangleIcon',
+        variant: 'danger',
+      },
+    })
+      
+    })},
    seeBracket(players){
         console.log(players),
            this.$router.push( { path: `/apps/competitions/bracket/${this.idCat}`})
@@ -322,7 +417,7 @@ body {
 }
 
 h1, h2 { 
-  text-align: center;
+  text-align: left;
 }
 
 h1 { 

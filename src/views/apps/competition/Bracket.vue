@@ -2,22 +2,31 @@
 <div>
 <div>
   <b-card no-body>
-    <h1>test</h1>
       <b-row>
-  <b-col lg="1">
-      <b-button
+      <b-col lg="8">
+         <div class="m-2">
+       {{category.nameCat}}
+        </div>
+      </b-col>
+      <b-col lg="4">
+         <div class="m-2">
+       
+            <b-button
+              style="float:right"
+
       v-ripple.400="'rgba(255, 255, 255, 0.15)'"
-      variant="warning"
+      variant="primary"
       class="btn-icon rounded-circle"
-      @click="$router.push( { path: `/apps/competitions/matches/${idCat}`})"
+       @click="$router.push( { path: `/apps/competitions/matches/${idCat}`})"
     >
       <feather-icon icon="DownloadIcon" />
     </b-button>
-          </b-col>
-            <b-col lg="11">
-          </b-col>
- 
+
+        </div>
+      </b-col>
+    
     </b-row>
+     
     <b-row>
       <br>
       </b-row>
@@ -148,18 +157,18 @@ export default {
 
 },
 created(){
-   authentication.hasRound({catId:"2"}).then(response=>{
+    authentication.hasRound({catId:router.currentRoute.params.id}).then(response=>{
       this.show=response.data.show
     })
    authentication.findCometitionById("2").then(response=>{
    this.comp=response.data.competition,
-   this.users=this.comp.Users,
    this.categories=this.comp.Categories
   this.category=this.categories.find(element => element.id == router.currentRoute.params.id)
-   this.catUsers=this.users.filter(user => user.Inscription.catId== router.currentRoute.params.id)
-   console.log(this.category)
+  console.log(this.category)
+ 
    
   })
+
  this.socket.emit('matches',{catId:router.currentRoute.params.id} )
   this.socket.on("matchesRep", data =>{
 

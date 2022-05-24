@@ -51,7 +51,7 @@
             >
               <b-form-input
                 id="nom"
-                v-model="userData.lastname"
+                v-model="admin.lastname"
                 autofocus
                 :state="getValidationState(validationContext)"
                 trim
@@ -76,7 +76,7 @@
             >
               <b-form-input
                 id="prenom"
-                v-model="userData.name"
+                v-model="admin.name"
                 :state="getValidationState(validationContext)"
                 trim
               />
@@ -99,7 +99,7 @@
             >
               <b-form-input
                 id="email"
-                v-model="userData.email"
+                v-model="admin.email"
                 :state="getValidationState(validationContext)"
                 trim
               />
@@ -122,7 +122,7 @@
             >
               <b-form-input
                 id="password"
-                v-model="userData.password"
+                v-model="admin.password"
                 :state="getValidationState(validationContext)"
                 trim
               />
@@ -145,7 +145,7 @@
             >
               <b-form-input
                 id="contact"
-                v-model="userData.phone"
+                v-model="admin.phone"
                 :state="getValidationState(validationContext)"
                 trim
               />
@@ -169,7 +169,7 @@
               :state="getValidationState(validationContext)"
             >
               <v-select
-                v-model="userData.role"
+                v-model="admin.role"
                 :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
                 :options="roleOptions"
                 :reduce="val => val.value"
@@ -256,10 +256,7 @@ export default {
       type: Array,
       required: true,
     },
-    planOptions: {
-      type: Array,
-      required: true,
-    },
+  
   },
   data() {
     return {
@@ -267,8 +264,51 @@ export default {
       alphaNum,
       email,
       countries,
-            error:null
+      error:null,
+      admin:{
+       lastname:'',
+        name:'',
+        phone:'',
+        role: '',
+        image:'',
+        email:'',
+        password :'',
 
+      }
+
+    }
+  },
+  methods:{
+  async isUsernameUnique() {
+      try {
+        const response = await authentication.isUniqueEmailFed ({
+         email: this.fed.email,
+     
+        })
+        return false;
+      } catch (err) {
+        if (err.response.status === 404) {
+          return true;
+        }
+      }
+    },
+
+        onSubmit (){
+      store.dispatch('app-user/addAdmin', this.admin)
+        .then(() => {
+             this.$toast({
+          component: ToastificationContent,
+          props: {
+            title: 'Opération réussi',
+            icon: 'AlertTriangleIcon',
+            text:"Fédeération ajouté avec succes ",
+            variant: 'success',
+          },
+        })
+
+          this.$emit('refetch-data')
+          this.$emit('update:is-add-new-user-sidebar-active', false)
+        }).catch({message:error.message})
     }
   },
   setup(props, { emit }) {
